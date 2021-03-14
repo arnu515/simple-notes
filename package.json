@@ -38,9 +38,11 @@
     "firebase": "^8.3.0",
     "handlebars": "^4.7.7",
     "highlight.js": "^10.6.0",
+    "joi": "^17.4.0",
     "marked": "^2.0.1",
     "page": "^1.11.6",
     "qs": "^6.9.6",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "slugify": "^1.4.7"
   }
 }
