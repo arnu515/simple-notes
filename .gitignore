@@ -1,0 +1,7 @@
+/node_modules/
+/public/build/
+
+.DS_Store
+
+src/util/firebase.config.ts
+yarn*.log
