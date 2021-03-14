@@ -12,6 +12,9 @@
   import { onMount } from "svelte";
   import { user } from "../../util/stores";
   import { db } from "../../util/firebase";
+  import Markdown from "../../components/content/Markdown.svelte";
+  import Wysiwyg from "../../components/content/Wysiwyg.svelte";
+  import Document from "../../components/content/Document.svelte";
 
   let grades: string[] | null = null;
   let grade: string | "null" = "null";
@@ -100,7 +103,17 @@
           </Select>
         </FormGroup>
 
-        <FormGroup label="3. Content" />
+        <FormGroup legendText="3. Content">
+          {#if noteType === 'markdown'}
+            <Markdown />
+          {:else if noteType === 'wysiwyg'}
+            <Wysiwyg />
+          {:else if noteType === 'document'}
+            <Document />
+          {:else}
+            <p>Select the type of your note first</p>
+          {/if}
+        </FormGroup>
 
         <Button kind="secondary" type="submit">Create note</Button>
       </Form>
