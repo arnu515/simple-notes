@@ -8,6 +8,7 @@
   import Auth from "./routes/auth.svelte";
   import Logout from "./routes/logout.svelte";
   import NoteSlug from "./routes/note/slug.svelte";
+  import NoteNew from "./routes/note/new.svelte";
   import GradeSlug from "./routes/grade/slug.svelte";
   import GradeSubjectSlug from "./routes/grade/subject/slug.svelte";
   import Notfound from "./routes/notfound.svelte";
@@ -35,6 +36,7 @@
   route(Auth, "/auth");
   route(Logout, "/logout");
   route(NoteSlug, "/note/:noteId");
+  route(NoteNew, "/new");
   route(GradeSlug, "/grade/:grade");
   route(GradeSubjectSlug, "/grade/:grade/:subject");
   route(Notfound, "*");
