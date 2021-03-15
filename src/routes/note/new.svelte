@@ -117,7 +117,6 @@
     }
 
     if (!content.trim()) return alert("Type some content first!");
-    console.log(content);
 
     await db.collection("notes").doc(slug).set({
       title,
