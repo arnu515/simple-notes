@@ -16,7 +16,6 @@
       setup: (editor: any) => {
         if (content) editor.setContent(content);
         editor.on("change keyup compositionend setcontent", () => {
-          console.log(editor.getContent({ format: "html" }));
           content = editor.getContent({ format: "html" });
         });
       },
