@@ -5,6 +5,7 @@
     SkeletonPlaceholder,
     ClickableTile,
     SkeletonText,
+    Button,
   } from "carbon-components-svelte";
   import Navbar from "../../components/Navbar.svelte";
   import { onMount } from "svelte";
@@ -15,6 +16,7 @@
   import type { Note } from "../../util/types";
   import type firebase from "firebase";
   import page from "page";
+  import { user } from "../../util/stores";
 
   const handlebarsContext = {
     time: dayjs().format("HH:mm:ss"),
@@ -117,6 +119,13 @@
   <Content>
     <h1 style="text-align: center">{note.title}</h1>
     <p style="text-align: center">By {author.displayName}</p>
+    {#if $user?.uid === note.uid}
+      <p style="text-align: center">
+        <Button small kind="ghost" href={`/note/${params.noteId}/edit`}>
+          Edit
+        </Button>
+      </p>
+    {/if}
 
     <div class="card" style="margin-top: 2rem">
       <div class="card-body">
