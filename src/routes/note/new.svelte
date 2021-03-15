@@ -15,6 +15,7 @@
   import { onMount } from "svelte";
   import { user } from "../../util/stores";
   import { db, storage } from "../../util/firebase";
+  import { getGrades, getSubjects, getTypes } from "../../util/helpers";
   import Markdown from "../../components/content/Markdown.svelte";
   import Wysiwyg from "../../components/content/Wysiwyg.svelte";
   import Document from "../../components/content/Document.svelte";
@@ -35,30 +36,11 @@
 
   let loading = false;
 
-  async function getGrades() {
-    const data = await db.collection("grades").get();
-    grades = data.docs.map((doc) => doc.id);
-  }
-
-  async function getTypes() {
-    const data = await db.collection("noteTypes").get();
-    types = data.docs.map((doc) => doc.id);
-  }
-
-  async function getSubjects(g?: string | "null") {
-    if (!g || g === "null") return;
-    const data = await db
-      .collection("subjects")
-      .where("grades", "array-contains", g)
-      .get();
-    subjects = data.docs.map((doc) => doc.data().name);
-  }
-
   onMount(async () => {
     if (!$user) page.show("/");
 
-    await getGrades();
-    await getTypes();
+    grades = await getGrades();
+    types = await getTypes();
   });
 
   async function newNote() {
@@ -133,7 +115,8 @@
     loading = false;
   }
 
-  $: if (grade && grade !== "null") getSubjects(grade);
+  $: if (grade && grade !== "null")
+    getSubjects(grade).then((s) => (subjects = s));
 </script>
 
 <Navbar />
