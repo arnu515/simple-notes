@@ -14,6 +14,7 @@
   import { storage } from "../../util/firebase";
   import type { Note } from "../../util/types";
   import type firebase from "firebase";
+  import page from "page";
 
   const handlebarsContext = {
     time: dayjs().format("HH:mm:ss"),
@@ -21,6 +22,7 @@
   };
 
   function markdown(content: string) {
+    setTimeout(() => hljs.highlightAll(), 2000);
     return marked(window["Handlebars"].compile(content)(handlebarsContext));
   }
 
@@ -28,22 +30,22 @@
   let note: Note | null = null;
   let author: firebase.User | null = null;
   let mdContent: string = "Loading...";
+  let helpersRegistered = false;
   let documentData: any;
   let documentDownloadUri: string;
 
   onMount(async () => {
     note = (await db.doc("notes/" + params.noteId).get()).data() as Note;
-    if (!note) return window.location.assign("/404");
+    if (!note) return page.show("/404");
     author = (await db.doc("users/" + note.uid).get()).data() as firebase.User;
 
     const Handlebars = window["Handlebars"];
 
     Handlebars.registerHelper("spoiler", (text: any, options: any) => {
-      console.log(text, this);
       return new Handlebars.SafeString(
         `<details><summary>${
           typeof text === "string" ? text : "Spoiler"
-        }</summary>\n${(options || text).fn(this)}</details>`
+        }</summary>\n${(options || text).fn(this)}</details><br/>`
       );
     });
     Handlebars.registerHelper(
@@ -56,12 +58,19 @@
 
         let inlineString = "";
         if (inline ?? true) {
-          inlineString = `<div class="l"><span class="w3-border w3-border-gray w3-white" style="display: inline; padding: 5px; text-transform: uppercase">Copy</span> <span class="w3-border w3-border-gray w3-white" style="display: inline; padding: 5px; text-transform: uppercase">${language.toUpperCase()}</div>\n`;
+          inlineString = `<div class="l"><span onclick="(function() {
+            var el = document.createElement('input');
+            el.value = '${Handlebars.Utils.escapeExpression(code)}';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            el.remove();
+          })()" class="b h" style="display: inline; padding: 5px; text-transform: uppercase">Copy</span> <span class="b" style="display: inline; padding: 5px; text-transform: uppercase">${language.toUpperCase()}</div>\n`;
         }
 
         return `<pre class="c" style="margin: 0">${inlineString}<code class="language-${language}">${Handlebars.Utils.escapeExpression(
           code
-        )}</code></pre>`;
+        )}</code></pre><br/>`;
       }
     );
     Handlebars.registerHelper("video", (href: any) => {
@@ -69,13 +78,15 @@
       return new Handlebars.SafeString(
         `<video src="${Handlebars.Utils.escapeExpression(
           href
-        )}" controls></video>`
+        )}" controls></video><br/>`
       );
     });
+    helpersRegistered = true;
   });
 
-  $: if (note && note.type === "markdown") mdContent = markdown(note.content);
-  $: if (mdContent) hljs.highlightAll();
+  $: if (note && note.type === "markdown" && helpersRegistered) {
+    mdContent = markdown(note.content);
+  }
   $: if (note && note.type === "document") {
     const ref = storage.ref().child(note.content);
     ref.getMetadata().then((metadata) => {

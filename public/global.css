@@ -34,3 +34,32 @@ h6 {
   color: #333;
   background-color: #ededed;
 }
+
+.c {
+  position: relative;
+}
+
+.c code {
+  border: 3px solid black;
+  border-radius: 0.4rem;
+}
+
+.l {
+  right: 10px;
+  top: 10px;
+  position: absolute;
+  display: flex;
+  gap: 1ch;
+  align-items: center;
+}
+
+.b {
+  background-color: white;
+  border: 1px black solid;
+  font-size: 16px !important;
+}
+
+.b.h:hover {
+  cursor: pointer;
+  background-color: #fefefe;
+}
