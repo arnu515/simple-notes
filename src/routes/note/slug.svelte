@@ -14,6 +14,7 @@
   import { storage } from "../../util/firebase";
   import type { Note } from "../../util/types";
   import type firebase from "firebase";
+  import page from "page";
 
   const handlebarsContext = {
     time: dayjs().format("HH:mm:ss"),
@@ -35,7 +36,7 @@
 
   onMount(async () => {
     note = (await db.doc("notes/" + params.noteId).get()).data() as Note;
-    if (!note) return window.location.assign("/404");
+    if (!note) return page.show("/404");
     author = (await db.doc("users/" + note.uid).get()).data() as firebase.User;
 
     const Handlebars = window["Handlebars"];

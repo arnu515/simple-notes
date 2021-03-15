@@ -5,6 +5,7 @@
   import { db } from "../../../util/firebase";
   import dayjs from "dayjs";
   import dayjsPluginRelativeTime from "dayjs/plugin/relativeTime";
+  import page from "page";
   import type { Note } from "../../../util/types";
 
   dayjs.extend(dayjsPluginRelativeTime);
@@ -52,7 +53,7 @@
       <div
         class="card"
         style="margin-top: 0.5rem; cursor: pointer"
-        on:click={() => window.location.assign(`/note/${note.id}`)}>
+        on:click={() => page.show(`/note/${note.id}`)}>
         <div class="card-body">
           <h4
             style="display: flex; align-items: center; justify-content: space-between">
