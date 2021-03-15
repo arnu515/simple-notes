@@ -12,7 +12,7 @@ export interface Note {
   id: number;
   subject: string;
   title: string;
-  type: "markdown" | "wysiwyg" | "document";
+  type: "markdown" | "wysiwyg" | "document" | "null";
   uid: string;
   updatedAt: number;
 }
