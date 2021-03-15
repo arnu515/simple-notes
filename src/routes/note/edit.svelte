@@ -26,6 +26,7 @@
 
   let { grade, subject, type: noteType, title } = note || {};
   let mLoading = false;
+  let deleteTwice = false;
 
   onMount(async () => {
     const data = await db.doc("notes/" + noteId).get();
@@ -85,6 +86,14 @@
         window.location.reload();
       });
   }
+
+  async function deleteNote() {
+    if ($user?.uid !== note.uid) return page.show("/login");
+    if (!deleteTwice) return (deleteTwice = true);
+
+    await db.doc("notes/" + note.id).delete();
+    page.show("/");
+  }
 </script>
 
 <Navbar />
@@ -130,6 +139,20 @@
             </Button>
           </p>
         </Form>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1rem">
+      <div class="card-body" style="border-color: red; color: red">
+        <h3 style="color: red">Delete</h3>
+        <p>
+          This operation CAN NOT be undone <br />
+          <Button
+            on:click={deleteNote}
+            kind={!deleteTwice ? 'danger' : 'secondary'}>
+            {deleteTwice ? 'Confirm' : 'Delete'}
+          </Button>
+        </p>
       </div>
     </div>
   </Content>
