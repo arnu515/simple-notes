@@ -9,6 +9,7 @@
   import Logout from "./routes/logout.svelte";
   import NoteSlug from "./routes/note/slug.svelte";
   import NoteNew from "./routes/note/new.svelte";
+  import NoteEdit from "./routes/note/edit.svelte";
   import GradeSlug from "./routes/grade/slug.svelte";
   import GradeSubjectSlug from "./routes/grade/subject/slug.svelte";
   import Notfound from "./routes/notfound.svelte";
@@ -37,6 +38,7 @@
   route(Logout, "/logout");
   route(NoteSlug, "/note/:noteId");
   route(NoteNew, "/new");
+  route(NoteEdit, "/note/:noteId/edit");
   route(GradeSlug, "/grade/:grade");
   route(GradeSubjectSlug, "/grade/:grade/:subject");
   route(Notfound, "*");
