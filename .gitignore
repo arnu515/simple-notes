@@ -5,3 +5,5 @@
 
 src/util/firebase.config.ts
 yarn*.log
+.firebaserc
+firebase*.log
